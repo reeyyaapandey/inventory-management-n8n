@@ -1,0 +1,430 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0dcc6b84-cbc2-4ddd-8e36-76603d7636f1",
+      "name": "When chat message received",
+      "webhookId": "e777fa78-1ee3-42fc-81ff-faecc0642264"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a97259ef-7f0f-4bd9-a56c-ea75e9bd5929",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        208
+      ],
+      "id": "cde38c54-c00e-4efd-9743-dde8c60f1ebe",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7vUoQC3yuak15F1h",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        208
+      ],
+      "id": "98f8a5df-d7a3-4490-a297-f6f71db3e0ec",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Search records in Airtable",
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app72hQlP0BxA7cQl",
+          "mode": "list",
+          "cachedResultName": "Mobile Accessories Inventory",
+          "cachedResultUrl": "https://airtable.com/app72hQlP0BxA7cQl"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblczNOj8Ku9bRMjc",
+          "mode": "list",
+          "cachedResultName": "Products",
+          "cachedResultUrl": "https://airtable.com/app72hQlP0BxA7cQl/tblczNOj8Ku9bRMjc"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        224
+      ],
+      "id": "2ff8c343-5d72-4aa8-bb6f-8e491dd8df03",
+      "name": "Search records in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "28gaHcMcPHpA7S51",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Update record in Airtable",
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app72hQlP0BxA7cQl",
+          "mode": "list",
+          "cachedResultName": "Mobile Accessories Inventory",
+          "cachedResultUrl": "https://airtable.com/app72hQlP0BxA7cQl"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblczNOj8Ku9bRMjc",
+          "mode": "list",
+          "cachedResultName": "Products",
+          "cachedResultUrl": "https://airtable.com/app72hQlP0BxA7cQl/tblczNOj8Ku9bRMjc"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $fromAI(\"recordID\",\"find the exact id of the item  may be update it when required\") }}",
+            "Current Stock Quantity": "={{$fromAI(\"newquantity\",\"update the quantity in airtable\",\"number\")}} "
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "SKU/Barcode",
+              "displayName": "SKU/Barcode",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Phone Case",
+                  "value": "Phone Case"
+                },
+                {
+                  "name": "Charger",
+                  "value": "Charger"
+                },
+                {
+                  "name": "Cable",
+                  "value": "Cable"
+                },
+                {
+                  "name": "Screen Protector",
+                  "value": "Screen Protector"
+                },
+                {
+                  "name": "Earphones",
+                  "value": "Earphones"
+                },
+                {
+                  "name": "Adapter",
+                  "value": "Adapter"
+                },
+                {
+                  "name": "Car Mount",
+                  "value": "Car Mount"
+                },
+                {
+                  "name": "Other",
+                  "value": "Other"
+                },
+                {
+                  "name": "Electronics",
+                  "value": "Electronics"
+                },
+                {
+                  "name": "Groceries",
+                  "value": "Groceries"
+                },
+                {
+                  "name": "Apparel",
+                  "value": "Apparel"
+                },
+                {
+                  "name": "Home & Kitchen",
+                  "value": "Home & Kitchen"
+                },
+                {
+                  "name": "Stationery",
+                  "value": "Stationery"
+                },
+                {
+                  "name": "Sports & Outdoors",
+                  "value": "Sports & Outdoors"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Current Stock Quantity",
+              "displayName": "Current Stock Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Reorder Point",
+              "displayName": "Reorder Point",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Unit Cost",
+              "displayName": "Unit Cost",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Supplier",
+              "displayName": "Supplier",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Warehouse Location",
+              "displayName": "Warehouse Location",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Product Image",
+              "displayName": "Product Image",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Purchase Orders",
+              "displayName": "Purchase Orders",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Inventory Movements",
+              "displayName": "Inventory Movements",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "record id",
+              "displayName": "record id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "min quantity",
+              "displayName": "min quantity",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        304
+      ],
+      "id": "aaebfd22-e1ba-420b-b494-03285a9bc362",
+      "name": "Update record in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "28gaHcMcPHpA7S51",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "63f223c1-8e21-4423-847b-eba0281948c4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "127e18481c83429f5abfb34099debf05c3b53d2e3986681cde72643e413143c3"
+  },
+  "id": "egwjOASmqC2V8Jj1",
+  "tags": []
+}
